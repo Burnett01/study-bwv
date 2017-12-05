@@ -31,54 +31,54 @@
 typedef struct Door Door;
 
 struct Door {
-	int price;  // 0 = no price | 1 = price
-	int picked; // 0 = unpicked | 1 = picked
-	int open;   // 0 = closed   | 1 = open
+  int price;  // 0 = no price | 1 = price
+  int picked; // 0 = unpicked | 1 = picked
+  int open;   // 0 = closed   | 1 = open
 };
 
 
 int main() {
 
   int maxdoors = 3;
-	int pricedoor = -1;
-	int playerdoor = -1;
-	int pcdoor = -1;
-	int i;
+  int pricedoor = -1;
+  int playerdoor = -1;
+  int pcdoor = -1;
+  int i;
   float probability = (1.0 / maxdoors);
   
-	// Seeding
-	time_t t;
-	srand( (unsigned)time( &t ) );
+  // Seeding
+  time_t t;
+  srand( (unsigned)time( &t ) );
 
   // Memory
-	Door **doors = (Door **)malloc( maxdoors * sizeof( Door * ) );
+  Door **doors = (Door **)malloc( maxdoors * sizeof( Door * ) );
 
   if( doors == NULL )
   {
-		exit( EXIT_FAILURE );
-	}
+    exit( EXIT_FAILURE );
+  }
 
   for( i = 0; i < maxdoors; i++ )
   {
-		doors[i] = (Door *)malloc( sizeof( Door ) );
+    doors[i] = (Door *)malloc( sizeof( Door ) );
 
     if( doors[i] == NULL )
     {
-			goto cleanup;
-			exit( EXIT_FAILURE );
-		}
+      goto cleanup;
+      exit( EXIT_FAILURE );
+    }
 
-		doors[i]->price = 0;
-		doors[i]->picked = 0;
-		doors[i]->open = 0;
-	}
+    doors[i]->price = 0;
+    doors[i]->picked = 0;
+    doors[i]->open = 0;
+  }
 
   // Attach price to a random door
   pricedoor = rand() % maxdoors;
-	doors[pricedoor]->price = 1;
+  doors[pricedoor]->price = 1;
 
-	printf( "Current probability: %f\n", probability );
-	printf( "Picking a door for player and pc...\n" );
+  printf( "Current probability: %f\n", probability );
+  printf( "Picking a door for player and pc...\n" );
 
   // Set and pick player door
   playerdoor = rand() % maxdoors;
@@ -87,65 +87,65 @@ int main() {
   // Set and pick pc door
   while( 1 )
   {
-		pcdoor = rand() % maxdoors;
+    pcdoor = rand() % maxdoors;
 
-		if( pcdoor != playerdoor && pcdoor != pricedoor )
-			break;
-	}
+    if( pcdoor != playerdoor && pcdoor != pricedoor )
+      break;
+  }
 
-	doors[pcdoor]->picked = 1;
-	doors[pcdoor]->open = 1;
+  doors[pcdoor]->picked = 1;
+  doors[pcdoor]->open = 1;
 
-	printf( "YOUR DOOR: %d (Index: %d) | PCDOOR: %d (Index: %d)\n", playerdoor + 1, playerdoor, pcdoor + 1, pcdoor );
-	printf( "Now you can either pick another one or keep yours\n" );
+  printf( "YOUR DOOR: %d (Index: %d) | PCDOOR: %d (Index: %d)\n", playerdoor + 1, playerdoor, pcdoor + 1, pcdoor );
+  printf( "Now you can either pick another one or keep yours\n" );
 
   while( 1 )
   {
-		int newchoice = rand() % maxdoors;
+    int newchoice = rand() % maxdoors;
 
     if( newchoice == playerdoor )
     {
-			printf( "You've kept your previous door! OK!\n" );
-			break;
-		}
+      printf( "You've kept your previous door! OK!\n" );
+      break;
+    }
 
-		if( newchoice == pcdoor )
-			continue;
+    if( newchoice == pcdoor )
+      continue;
 
-		playerdoor = newchoice;
-		printf( "You've picked another door! Number: %d (Index: %d) \n", playerdoor + 1, playerdoor );
+    playerdoor = newchoice;
+    printf( "You've picked another door! Number: %d (Index: %d) \n", playerdoor + 1, playerdoor );
 
-		probability *= 2;
+    probability *= 2;
 
-		break;
-	}
+    break;
+  }
 
   // Evaluate
   if( playerdoor == pricedoor )
   {
-		printf( "Congratulations! You've won the price!\n" );
+    printf( "Congratulations! You've won the price!\n" );
   }
   else
   {
-		printf( "Damn! You have lost the game!\n" );
-		printf( "The price was behind door %d (Index: %d)\n", pricedoor + 1, pricedoor );
-	}
+    printf( "Damn! You have lost the game!\n" );
+    printf( "The price was behind door %d (Index: %d)\n", pricedoor + 1, pricedoor );
+  }
 
-	printf( "Final probability: %f\n", probability );
+  printf( "Final probability: %f\n", probability );
 
-	// Cleanup
-	cleanup:
+  // Cleanup
+  cleanup:
     for( i = 0; i < maxdoors; i++ )
     {
-			if( doors[i] != NULL )
-				free( doors[i] );
-		}
+      if( doors[i] != NULL )
+        free( doors[i] );
+    }
 
-		free( doors );
+    free( doors );
 
-  
+
   // Pause...
-	system( "pause" );
+  system( "pause" );
 
 	return 0;
 }
