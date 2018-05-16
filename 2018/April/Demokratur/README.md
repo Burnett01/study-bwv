@@ -5,7 +5,7 @@
 
 Yet another procedural programming assignment.
 
-I got an OO version but can't be bothered to fix it.
+I also got an OOP version but can't be bothered to fix it.
 
 Maybe later.
 
